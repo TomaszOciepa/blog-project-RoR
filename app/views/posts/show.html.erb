@@ -1,0 +1,63 @@
+<p style="color: green"><%= notice %></p>
+
+<h1><%= @post.title %></h1>
+<p><%= simple_format(@post.body) %></p>
+<p><strong>Opublikowany:</strong> <%= @post.published ? "tak" : "nie" %></p>
+
+<hr>
+
+<h2>Komentarze</h2>
+
+<% if @post.comments.any? %>
+  <div id="comments">
+    <% @post.comments.order(created_at: :desc).each do |comment| %>
+      <div class="comment" style="border:1px solid #ddd; padding:8px; margin-bottom:8px;">
+        <p>
+  <strong><%= comment.author %></strong> • 
+  <%= comment.created_at.strftime("%d-%m-%Y %H:%M:%S") %>
+</p>
+        <p><%= simple_format(comment.content) %></p>
+        <%= button_to "Usuń", [@post, comment], method: :delete, data: { confirm: "Na pewno?" } %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>Brak komentarzy. Bądź pierwszy!</p>
+<% end %>
+
+<hr>
+
+<h3>Dodaj komentarz</h3>
+<%= form_with(model: [@post, @post.comments.build]) do |f| %>
+  <% if @comment && @comment.errors.any? %>
+    <div style="color: red;">
+      <p><strong>Błędy:</strong></p>
+      <ul>
+        <% @comment.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :author, "Autor" %><br>
+    <%= f.text_field :author %>
+  </div>
+
+  <div style="margin-top:8px;">
+    <%= f.label :content, "Treść" %><br>
+    <%= f.text_area :content, rows: 4 %>
+  </div>
+
+  <div style="margin-top:8px;">
+    <%= f.submit "Dodaj komentarz" %>
+  </div>
+<% end %>
+
+<hr>
+
+<div>
+  <%= link_to "Edytuj ten post", edit_post_path(@post) %> |
+  <%= link_to "Wstecz do listy", posts_path %>
+</div>
