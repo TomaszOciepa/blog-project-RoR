@@ -8,18 +8,73 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body>
-    <p class="notice" style="color: green;"><%= notice %></p>
-    <p class="alert"  style="color: red;"><%= alert %></p>
-    <%= yield %>
+
+  <body class="bg-gray-900 text-gray-100 font-mono min-h-screen flex">
+
+    <!-- Lewa kolumna: nagłówek + menu -->
+    <aside class="w-64 bg-gray-800 border-r border-gray-700 p-6 flex-shrink-0 h-screen flex flex-col">
+
+      <!-- Nagłówek bloga -->
+   <h1 class="text-2xl font-bold mb-6 text-green-400 font-mono">
+  <%= link_to "📂 Tech Blog", posts_path, class: "text-green-400 hover:text-green-300" %>
+</h1>
+
+
+    <hr class="border-t border-green-400 mb-6">
+
+      <!-- Menu -->
+      <h2 class="text-xl font-bold text-green-400 mb-6">Menu</h2>
+      <ul class="space-y-3 flex-1">
+        <% if controller_name == 'posts' && action_name == 'index' %>
+          <li>
+            <%= link_to "➕[Dodaj nowy post]", new_post_path, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400" %>
+          </li>
+        <% elsif controller_name == 'posts' && action_name == 'show' %>
+            <li>
+            <%= link_to "⬅️ [Wróć do listy]", posts_path, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400" %>
+          </li>
+          <li>
+            <%= link_to "✏️ [Edytuj post]", edit_post_path(@post), class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400" %>
+          </li>
+          <li>
+              <%= button_to "🗑️ [Usuń post]", post_path(@post), method: :delete,
+               form: { onsubmit: "return confirm('Na pewno chcesz usunąć ten post?');" },
+                class: "w-full text-left px-3 py-2 rounded text-red-500 hover:bg-gray-700 hover:text-red-400 font-mono font-semibold" %>
+              </li>
+        <% elsif controller_name == 'posts' && action_name == 'edit' %>   
+        <li>
+          <%= link_to "⬅️ [Wróć do listy]", posts_path, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400" %>
+          </li>
+         <li> 
+          <%= link_to "🔍 [POKAŻ POST]", @post, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400" %>
+        </li>
+
+        <% end %>
+      </ul>
+
+    </aside>
+
+    <!-- Główna zawartość po prawej -->
+    <main class="flex-1 p-8">
+
+      <!-- Powiadomienia -->
+      <% if notice.present? %>
+        <p class="mb-4 text-green-400 font-semibold"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p class="mb-4 text-red-400 font-semibold"><%= alert %></p>
+      <% end %>
+
+      <!-- Zawartość widoków -->
+      <%= yield %>
+    </main>
+
   </body>
+  
 </html>

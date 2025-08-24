@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @layer utilities {
+  /* ----------------------------------------------------------
+     Animacja mrugającego kursora
+  ---------------------------------------------------------- */
   @keyframes blink {
     0%,
     50%,
@@ -14,6 +17,58 @@
   }
 
   .animate-blink {
-    animation: blink 2s step-start infinite;
+    animation: blink 1s step-start infinite;
+  }
+
+  /* ----------------------------------------------------------
+     Animacja "pisania" dla nagłówków krótkich
+  ---------------------------------------------------------- */
+  @keyframes typing {
+    from {
+      width: 0ch;
+    }
+    to {
+      width: 16ch;
+    } /* dokładna liczba znaków w tekście */
+  }
+
+  .animate-typing {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #22c55e; /* kursor */
+    animation: typing 1s steps(16, end) forwards;
+  }
+
+  /* Po zakończeniu animacji kursor zostaje i mruga */
+  .animate-typing.finished {
+    border-right: none;
+  }
+
+  /* ----------------------------------------------------------
+     Animacja "pisania" dla długich tytułów (np. show.html.erb)
+  ---------------------------------------------------------- */
+  @keyframes typing-show {
+    from {
+      width: 0ch;
+    }
+    to {
+      width: 100%;
+    } /* szerokość ustalana dynamicznie w JS */
+  }
+
+  .animate-typing-show {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #22c55e; /* kursor */
+    animation: typing-show 3s steps(40, end) forwards;
+  }
+
+  /* Po zakończeniu animacji: mrugający kursor na końcu */
+  .animate-typing-show.finished::after {
+    content: "█";
+    display: inline-block;
+    animation: blink 1s step-start infinite;
   }
 }

@@ -1,9 +1,9 @@
-<%= form_with(model: post) do |form| %>
-  <% if post.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+<%= form_with(model: post, local: true, class: "space-y-4 font-mono text-gray-100") do |form| %>
 
-      <ul>
+  <% if post.errors.any? %>
+    <div class="p-3 bg-red-900 text-red-300 rounded">
+      <h2 class="font-bold"><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <ul class="list-disc list-inside">
         <% post.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,22 +11,27 @@
     </div>
   <% end %>
 
+  <!-- Tytuł -->
   <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+    <%= form.label :title, "Tytuł", class: "block font-semibold mb-1 text-green-300" %>
+    <%= form.text_field :title, class: "w-full p-2 bg-gray-800 border border-gray-500 rounded text-green-200 focus:outline-none focus:ring-2 focus:ring-green-400" %>
   </div>
 
+  <!-- Treść -->
   <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.textarea :body %>
+    <%= form.label :body, "Treść", class: "block font-semibold mb-1 text-green-300 mt-4" %>
+    <%= form.text_area :body, rows: 6, class: "w-full p-2 bg-gray-800 border border-gray-500 rounded text-green-200 focus:outline-none focus:ring-2 focus:ring-green-400" %>
   </div>
 
-  <div>
-    <%= form.label :published, style: "display: block" %>
-    <%= form.checkbox :published %>
+  <!-- Published checkbox -->
+  <div class="mt-4 flex items-center space-x-2">
+    <%= form.check_box :published, class: "accent-green-400" %>
+    <%= form.label :published, "Opublikowany", class: "text-green-300 font-medium" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <!-- Submit -->
+  <div class="mt-4">
+    <%= form.submit "Zapisz post", class: "bg-gray-800 hover:bg-gray-700 text-green-300 hover:text-green-400 px-4 py-2 rounded transition-colors duration-200" %>
   </div>
+
 <% end %>
