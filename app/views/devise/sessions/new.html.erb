@@ -1,0 +1,30 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100">
+  <div class="w-full max-w-md p-8 bg-gray-800 rounded shadow-lg">
+    <h2 class="text-2xl font-bold text-green-400 mb-6 text-center">Logowanie</h2>
+
+    <%= form_with(model: resource, url: session_path(resource_name), local: true, class: "space-y-4") do |f| %>
+      <div>
+        <%= f.label :email, class: "block mb-1 text-green-300 font-semibold" %>
+        <%= f.email_field :email, autofocus: true, class: "w-full p-2 rounded bg-gray-700 text-green-200 focus:outline-none focus:ring-2 focus:ring-green-400" %>
+      </div>
+
+      <div>
+        <%= f.label :password, class: "block mb-1 text-green-300 font-semibold" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "w-full p-2 rounded bg-gray-700 text-green-200 focus:outline-none focus:ring-2 focus:ring-green-400" %>
+      </div>
+
+      <div class="flex items-center justify-between text-sm text-gray-400">
+        <%= f.check_box :remember_me %> <%= f.label :remember_me %>
+        <%= link_to "Zapomniałeś hasła?", new_password_path(resource_name), class: "hover:text-green-400" %>
+      </div>
+
+      <div>
+        <%= f.submit "Zaloguj się", class: "w-full py-2 px-4 bg-green-400 text-gray-900 font-bold rounded hover:bg-green-300 transition-colors" %>
+      </div>
+    <% end %>
+
+    <p class="mt-4 text-center text-gray-400">
+      Nie masz konta? <%= link_to "Zarejestruj się", new_registration_path(resource_name), class: "text-green-400 hover:text-green-300" %>
+    </p>
+  </div>
+</div>
