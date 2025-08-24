@@ -1,13 +1,15 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :authorize_user!, only: [:edit, :update, :destroy]
 
   # GET /posts or /posts.json
   def index
-    @posts = if params[:query].present?
-      Post.where("title LIKE ? OR body LIKE ?", "%#{params[:query]}%", "%#{params[:query]}%").order(created_at: :desc)
-    else
-      Post.order(created_at: :desc)
+    @posts = Post.where(published: true).order(created_at: :desc)
+
+    if params[:query].present?
+      query = "%#{params[:query]}%"
+      @posts = @posts.where("title LIKE ? OR body LIKE ?", query, query)
     end
   end
 
@@ -62,6 +64,10 @@ class PostsController < ApplicationController
     end
   end
 
+  def my_posts
+    @posts = current_user.posts.order(created_at: :desc)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
@@ -72,4 +78,11 @@ class PostsController < ApplicationController
     def post_params
       params.expect(post: [ :title, :body, :published ])
     end
+
+    def authorize_user!
+      return if @post.user == current_user
+    
+      redirect_to posts_path, alert: "Nie masz uprawnień do edycji tego posta."
+    end
+    
 end
