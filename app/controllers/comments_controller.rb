@@ -27,16 +27,20 @@ class CommentsController < ApplicationController
     def set_post
       @post = Post.find(params[:post_id])
     end
+
+    def set_comment
+      @comment = @post.comments.find(params[:id])
+    end
   
     def comment_params
       params.require(:comment).permit(:author, :content)
     end
 
-    def authorize_post_author!
-      return if @post.user == current_user
-    
-      redirect_to @post, alert: "Nie masz uprawnień do usuwania komentarzy pod tym postem."
-    end
+   def authorize_post_author!
+  return if @post.user == current_user
+
+  redirect_to @post, alert: "Nie masz uprawnień do usuwania komentarzy pod tym postem."
+end
 
   end
   
