@@ -17,8 +17,9 @@
         <td class="px-4 py-2 space-x-2">
           <%= link_to "Edit", edit_admin_user_path(user), class: "text-green-400" %>
           <% unless user == current_user %>
-            <%= link_to "Delete", admin_user_path(user), method: :delete,
-                        data: { confirm: "Are you sure?" }, class: "text-red-500" %>
+            <%= link_to "Delete", admin_user_path(user),
+      data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+      class: "text-red-500" %>
           <% end %>
         </td>
       </tr>

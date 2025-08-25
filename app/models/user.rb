@@ -1,7 +1,7 @@
 class User < ApplicationRecord
     # Associations
     has_many :posts, dependent: :destroy
-    has_many :comments, dependent: :destroy
+    has_many :comments
   
     # Roles
     enum :role, { viewer: 0, writer: 1, admin: 2 }
