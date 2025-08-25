@@ -1,25 +1,38 @@
-# README
+# Terminal Retro Blog
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A retro-style blog built with Ruby on Rails.
 
-Things you may want to cover:
+---
 
-* Ruby version
+## Requirements
 
-* System dependencies
+- Ruby 3.x
+- Rails 8.x
+- SQLite3
 
-* Configuration
+---
 
-* Database creation
+## Setup & Run
 
-* Database initialization
+```bash
+git clone <repository_url>
+cd blog-project
+bundle install
+yarn install
+rails db:create
+rails db:migrate
+rails db:seed
+rails server
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+Then visit http://localhost:3000
+ in your browser.
 
-* ...
-# blog-project-RoR
+
+ | Role   | Email                                           | Password |
+| ------ | ----------------------------------------------- | -------- |
+| Admin  | root@root.pl                                    | admin123 |
+| Writer | jan_kowalski@blog.pl                            | janek123 |
+| Viewer | tomek_nowak@blog.pl                             | tomek123 |
+```
