@@ -1,7 +1,13 @@
 class User < ApplicationRecord
-  has_many :posts, dependent: :destroy
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-end
+    # Associations
+    has_many :posts, dependent: :destroy
+    has_many :comments, dependent: :destroy
+  
+    # Roles
+    enum :role, { viewer: 0, writer: 1, admin: 2 }
+  
+    # Devise modules
+    devise :database_authenticatable, :registerable,
+           :recoverable, :rememberable, :validatable
+  end
+  

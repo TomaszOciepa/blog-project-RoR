@@ -2,10 +2,17 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :authorize_user!, only: [:edit, :update, :destroy]
+  before_action :authorize_creation!, only: [:new, :create]
 
-  # GET /posts or /posts.json
+  # GET /posts
   def index
-    @posts = Post.where(published: true).order(created_at: :desc)
+    if user_signed_in? && current_user.admin?
+      # Admin widzi wszystkie posty
+      @posts = Post.order(created_at: :desc)
+    else
+      # Reszta tylko opublikowane
+      @posts = Post.where(published: true).order(created_at: :desc)
+    end
 
     if params[:query].present?
       query = "%#{params[:query]}%"
@@ -13,7 +20,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # GET /posts/1 or /posts/1.json
+  # GET /posts/1
   def show
   end
 
@@ -26,10 +33,10 @@ class PostsController < ApplicationController
   def edit
   end
 
-  # POST /posts or /posts.json
+  # POST /posts
   def create
     @post = current_user.posts.build(post_params)
-  
+
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: "Post was successfully created." }
@@ -41,7 +48,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /posts/1 or /posts/1.json
+  # PATCH/PUT /posts/1
   def update
     respond_to do |format|
       if @post.update(post_params)
@@ -54,7 +61,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # DELETE /posts/1 or /posts/1.json
+  # DELETE /posts/1
   def destroy
     @post.destroy!
 
@@ -64,25 +71,32 @@ class PostsController < ApplicationController
     end
   end
 
+  # GET /my_posts
   def my_posts
     @posts = current_user.posts.order(created_at: :desc)
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_post
-      @post = Post.find(params.expect(:id))
+      @post = Post.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def post_params
-      params.expect(post: [ :title, :body, :published ])
+      params.require(:post).permit(:title, :body, :published)
     end
 
+    # Edycja i usuwanie: autor albo admin
     def authorize_user!
-      return if @post.user == current_user
-    
-      redirect_to posts_path, alert: "Nie masz uprawnień do edycji tego posta."
+      unless current_user.admin? || (current_user.writer? && @post.user == current_user)
+        redirect_to posts_path, alert: "You are not authorized to edit or delete this post."
+      end
     end
-    
+
+    # Tworzenie: tylko writer albo admin
+    def authorize_creation!
+      unless current_user.admin? || current_user.writer?
+        redirect_to posts_path, alert: "You are not authorized to create posts."
+      end
+    end
 end
