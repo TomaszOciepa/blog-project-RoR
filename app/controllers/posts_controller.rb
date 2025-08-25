@@ -6,13 +6,9 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    if user_signed_in? && current_user.admin?
-      # Admin widzi wszystkie posty
-      @posts = Post.order(created_at: :desc)
-    else
-      # Reszta tylko opublikowane
+   
       @posts = Post.where(published: true).order(created_at: :desc)
-    end
+  
 
     if params[:query].present?
       query = "%#{params[:query]}%"

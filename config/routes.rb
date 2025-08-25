@@ -9,5 +9,10 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
 
+ # Admin panel for managing users
+ namespace :admin do
+  resources :users, only: [:index, :edit, :update, :destroy]
+end
+
   root "posts#index"
 end

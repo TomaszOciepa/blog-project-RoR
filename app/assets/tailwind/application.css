@@ -28,7 +28,7 @@
       width: 0ch;
     }
     to {
-      width: 34ch;
+      width: 22ch;
     } /* dokładna liczba znaków w tekście */
   }
 
@@ -36,8 +36,8 @@
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 2px solid #22c55e; /* kursor */
-    animation: typing 1s steps(16, end) forwards;
+    /* border-right: 2px solid #22c55e; kursor */
+    animation: typing 0.3s steps(16, end) forwards;
   }
 
   /* Po zakończeniu animacji kursor zostaje i mruga */
@@ -61,7 +61,7 @@
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 2px solid #22c55e; /* kursor */
+    /* border-right: 2px solid #22c55e; kursor */
     animation: typing-show 3s steps(40, end) forwards;
   }
 

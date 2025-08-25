@@ -1,7 +1,7 @@
 <% content_for :title, "Posts" %>
 <div class="min-h-screen bg-gray-900 text-gray-100 p-2 font-mono">
   <h1 class="text-2xl font-bold mb-6 text-green-400 font-mono overflow-hidden whitespace-nowrap animate-typing blink">
-    Witaj w "_Terminal_Retro_Blog_" <span class="animate-blink">█</span>
+    _Terminal_Retro_Blog
   </h1>
   <div id="posts" class="space-y-4">
   <%= form_with url: posts_path, method: :get, local: true, class: "mb-6" do |f| %>
@@ -13,6 +13,9 @@
           class: "px-4 py-2 bg-gray-800 text-green-200 rounded-r hover:bg-gray-700 hover:text-green-400 transition-colors" %>
   </div>
 <% end %>
+  <h2 class="text-2xl font-bold mb-6 text-green-400 font-mono overflow-hidden whitespace-nowrap animate-typing blink">
+   > glowna = [posts] 
+  </h2>
 <% @posts.each do |post| %>
   <div 
     class="bg-gray-800 border border-gray-700 rounded shadow-inner p-4 hover:bg-gray-700 transition-colors duration-200 cursor-pointer"

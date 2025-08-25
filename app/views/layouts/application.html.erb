@@ -15,7 +15,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-900 text-gray-100 font-mono min-h-screen flex">
+  <body class="bg-gray-900 text-gray-100 font-mono min-h-screen flex ">
 
     <!-- Lewa kolumna: nagłówek + menu -->
     <aside class="w-64 bg-gray-800 border-r border-gray-700 p-6 flex-shrink-0 h-screen flex flex-col">
@@ -26,14 +26,15 @@
 </h1>
 
 
-    <hr class="border-t border-green-400 mb-6">
+    
 
 <% if user_signed_in? %>
-  <h2 class="text-xl font-bold text-green-400 mb-6">Menu</h2>
+<hr class="border-t border-green-400 mb-6">
+  <h2 class="text-xl font-bold text-green-400 mb-6">_Menu</h2>
   <ul class="space-y-3 flex-1">
     <li>
       <%= link_to posts_path, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400 #{'text-green-400 font-semibold' if current_page?(posts_path)}" do %>
-        <span class="mr-1">[Główna]</span>
+        <span class="mr-1">[ _Główna]</span>
         <% if current_page?(posts_path) %>
           <span class="animate-blink">█</span>
         <% end %>
@@ -41,7 +42,7 @@
     </li>
     <li>
       <%= link_to my_posts_path, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400 #{'text-green-400 font-semibold' if current_page?(my_posts_path)}" do %>
-        <span class="mr-1">[Moje posty]</span>
+        <span class="mr-1">[ _Moje_posty]</span>
         <% if current_page?(my_posts_path) %>
           <span class="animate-blink">█</span>
         <% end %>
@@ -50,13 +51,29 @@
     <% if user_signed_in? && (current_user.writer? || current_user.admin?) %>
     <li>
       <%= link_to new_post_path, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400 #{'text-green-400 font-semibold' if current_page?(new_post_path)}" do %>
-        <span class="mr-1">[Dodaj post]</span>
+        <span class="mr-1">[ _Dodaj_post]</span>
         <% if current_page?(new_post_path) %>
           <span class="animate-blink">█</span>
         <% end %>
       <% end %>
     </li>
     <% end %>
+
+  
+
+       <% if current_user.admin? %>
+       <hr class="border-t border-green-400 my-6">
+       <h2 class="text-xl font-bold text-green-400 mb-6">_Root_Menu</h2>
+   <li>
+  <%= link_to admin_users_path, class: "block px-3 py-2 rounded hover:bg-gray-700 hover:text-green-400 #{'text-green-400 font-semibold' if current_page?(admin_users_path)}" do %>
+    <span class="mr-1">[ _Manage_users]</span>
+    <% if current_page?(admin_users_path) %>
+      <span class="animate-blink">█</span>
+    <% end %>
+  <% end %>
+</li>
+
+      <% end %>
   </ul>
 <% end %>
 
