@@ -1,16 +1,16 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!          
   before_action :set_post
   before_action :set_comment, only: [:destroy]
   before_action :authorize_comment_deletion!, only: [:destroy]
   
   def create
     @comment = @post.comments.build(comment_params)
+    @comment.author = current_user.email      
 
     if @comment.save
       redirect_to @post, notice: "Komentarz dodany."
     else
-      # pokaż błędy na stronie posta
       @comments = @post.comments.order(created_at: :desc)
       flash.now[:alert] = "Nie udało się dodać komentarza."
       render "posts/show", status: :unprocessable_entity
@@ -33,18 +33,19 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:author, :content)
+    params.require(:comment).permit(:content)  
   end
 
-  # 🔑 Autoryzacja usuwania komentarzy
+
   def authorize_comment_deletion!
-    # Admin może wszystko
+    
     return if current_user.admin?
     
-    # Writer może usuwać komentarze tylko pod swoimi postami
     return if current_user.writer? && @post.user == current_user
   
-    # Inni (w tym viewer) nie mają prawa
+    return if @comment.author == current_user.email
+  
     redirect_to @post, alert: "You are not authorized to delete this comment."
   end
+  
 end
